@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+            position: relative;
+        }
+        .search-bar {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .search-bar input {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .product-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px;
+        }
+        .product-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .product-card img:hover {
+            transform: scale(1.1);
+        }
+        .product-info h3 {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .product-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .product-info .price {
+            font-size: 18px;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .discount-label {
+            color: rgb(255, 0, 0) !important;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    Shopping Center
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search products...🔎">
+    </div>
+</div>
+
+<div class="product-container" id="productContainer">
+    <div class="product-card" data-name="Cotton piqué polo shirt">
+        <a href="p21.html">
+            <img src="a.jpeg" alt="Cotton piqué polo shirt">
+        </a>
+        <div class="product-info">
+            <h3>Cotton piqué polo shirt</h3>
+            <p>Category: Shirt</p>
+            <p>Seller: Melanie Lyne</p>
+            <p class="price">₹700</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Appliquéd zip-through hoodie">
+        <a href="p22.html">
+            <img src="b.jpeg" alt="Appliquéd zip-through hoodie">
+        </a>
+        <div class="product-info">
+            <h3>Appliquéd zip-through hoodie</h3>
+            <p>Category: Hoodie</p>
+            <p>Seller: Melanie Lyne</p>
+            <p class="price">₹2000</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Cotton denim shirt">
+        <a href="p23.html">
+            <img src="c.jpeg" alt="Cotton denim shirt">
+        </a>
+        <div class="product-info">
+            <h3>Cotton denim shirt</h3>
+            <p>Category: Shirt</p>
+            <p>Seller: Melanie Lyne</p>
+            <p class="price">₹1300</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Superstretch Wide Leg Jeans">
+        <a href="p24.html">
+            <img src="d.jpeg" alt="Superstretch Wide Leg Jeans">
+        </a>
+        <div class="product-info">
+            <h3>Superstretch Wide Leg Jeans</h3>
+            <p>Category: Jeans</p>
+            <p>Seller: Elegant Wear</p>
+            <p class="price">₹1500</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Biker jacket">
+        <a href="p25.html">
+            <img src="e.jpeg" alt="Biker jacket">
+        </a>
+        <div class="product-info">
+            <h3>Biker jacket</h3>
+            <p>Category: Jacket</p>
+            <p>Seller: Trendy Styles</p>
+            <p class="price">₹2300</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let products = document.querySelectorAll('.product-card');
+        
+        products.forEach(product => {
+            let name = product.getAttribute('data-name').toLowerCase();
+            if (name.includes(filter)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let products = document.querySelectorAll(".product-card");
+        let storedDiscount = JSON.parse(localStorage.getItem("discountedProduct")) || null;
+        let newDiscountProduct = null;
+
+        // Check if there's no existing discount or if the discount has expired
+        if (!storedDiscount || new Date().getTime() > storedDiscount.expiry) {
+            let randomIndex = Math.floor(Math.random() * products.length);
+            let selectedProduct = products[randomIndex];
+            let discountPercentage = Math.floor(Math.random() * 21) + 10;
+
+            newDiscountProduct = {
+                name: selectedProduct.getAttribute("data-name"),
+                price: parseFloat(selectedProduct.querySelector(".price").textContent.replace("₹", "")),
+                discount: discountPercentage,
+                expiry: new Date().getTime() + 60000 // Discount expires in 1 minute
+            };
+
+            localStorage.setItem("discountedProduct", JSON.stringify(newDiscountProduct));
+        }
+
+        let discountData = newDiscountProduct || storedDiscount;
+
+        if (discountData) {
+            products.forEach(product => {
+                if (product.getAttribute("data-name") === discountData.name) {
+                    let priceElement = product.querySelector(".price");
+                    let discountPrice = discountData.price - (discountData.price * discountData.discount / 100);
+                    
+                    // Create the discount label if it doesn't already exist
+                    let discountLabel = document.createElement("p");
+                    discountLabel.classList.add("discount-label");
+                    discountLabel.innerHTML = `${discountData.discount}% OFF! Now ₹${discountPrice}`;
+                    priceElement.parentNode.insertBefore(discountLabel, priceElement.nextSibling);
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

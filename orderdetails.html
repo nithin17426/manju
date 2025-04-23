@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-info {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .order-info p {
+            margin: 10px 0;
+        }
+
+        .order-info strong {
+            color: #007bff;
+        }
+
+        .product-container {
+            flex: 0.5;
+            text-align: center;
+        }
+
+        .product-container h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .product-images {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-images img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .product-images img:hover {
+            transform: scale(1.1);
+        }
+
+        .product-images img:active {
+            transform: scale(1.2);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            width: 200px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Order Details Section -->
+<div class="container">
+    <div class="order-info">
+        <h2>Order Details</h2>
+        <p><strong>Order ID:</strong> <span id="orderId"></span></p>
+        <p><strong>First Name:</strong> <span id="firstName"></span></p>
+        <p><strong>Last Name:</strong> <span id="lastName"></span></p>
+        <p><strong>Address:</strong> <span id="address"></span></p>
+        <p><strong>Country:</strong> <span id="country"></span></p>
+        <p><strong>State:</strong> <span id="state"></span></p>
+        <p><strong>City:</strong> <span id="city"></span></p>
+        <p><strong>Zip Code:</strong> <span id="zip"></span></p>
+        <p><strong>Phone Number:</strong> <span id="phone"></span></p>
+        <p><strong>Total Items:</strong> <span id="totalItems">0</span></p>
+        <p><strong>Total Amount:</strong> ₹<span id="totalAmount">0</span></p>
+        <p><strong>Payment Method:</strong> <span id="paymentMethod">Not specified</span></p>
+    </div>
+
+    <div class="product-container">
+        <h3>Product Image</h3>
+        <div class="product-images" id="productImages"></div>
+    </div>
+</div>
+
+<!-- Side-by-Side Buttons Section -->
+<div class="btn-container">
+    <button class="btn" onclick="saveOrder()">Save Order</button>
+    <button class="btn" onclick="downloadCSV()">Download CSV</button>
+    <button class="btn" onclick="window.location.href='mainpage.html'">Back to Main Page</button>
+</div>
+
+<script>
+    function saveOrder() {
+        let allOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
+
+        const orderDetails = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        const paymentMethod = localStorage.getItem('paymentMethod') || 'Not specified';
+        const totalItems = localStorage.getItem('itemsCount') || 0;
+        const totalAmount = localStorage.getItem('totalCost') || 0;
+        const orderTime = new Date().toLocaleTimeString();
+        const orderDate = new Date().toLocaleDateString();
+
+        const newOrder = {
+            orderId: orderDetails.orderId || Math.floor(Math.random() * 1000000),
+            firstName: orderDetails.firstName || "Unknown",
+            lastName: orderDetails.lastName || "Unknown",
+            address: orderDetails.address || "Unknown",
+            country: orderDetails.country || "Unknown",
+            state: orderDetails.state || "Unknown",
+            city: orderDetails.city || "Unknown",
+            zip: orderDetails.zip || "Unknown",
+            phone: orderDetails.phone || "Unknown",
+            totalItems,
+            totalAmount,
+            paymentMethod,
+            orderTime,
+            orderDate
+        };
+
+        allOrders.push(newOrder);
+        localStorage.setItem('allOrders', JSON.stringify(allOrders));
+
+        alert('Order saved successfully!');
+    }
+
+    function downloadCSV() {
+        let allOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
+
+        if (allOrders.length === 0) {
+            alert('No orders found!');
+            return;
+        }
+
+        let csvContent = "Order ID,First Name,Time Ordered,Date Ordered,Phone Number,Total Items,Total Amount\n";
+
+        allOrders.forEach(order => {
+            csvContent += `${order.orderId},${order.firstName},${order.orderTime},${order.orderDate},${order.phone},${order.totalItems},${order.totalAmount}\n`;
+        });
+
+        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'order_history.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Display the latest order details
+    const orderDetails = JSON.parse(localStorage.getItem('orderDetails')) || {};
+    document.getElementById('orderId').textContent = orderDetails.orderId || "Not Available";
+    document.getElementById('firstName').textContent = orderDetails.firstName || "Not Available";
+    document.getElementById('lastName').textContent = orderDetails.lastName || "Not Available";
+    document.getElementById('address').textContent = orderDetails.address || "Not Available";
+    document.getElementById('country').textContent = orderDetails.country || "Not Available";
+    document.getElementById('state').textContent = orderDetails.state || "Not Available";
+    document.getElementById('city').textContent = orderDetails.city || "Not Available";
+    document.getElementById('zip').textContent = orderDetails.zip || "Not Available";
+    document.getElementById('phone').textContent = orderDetails.phone || "Not Available";
+    document.getElementById('paymentMethod').textContent = localStorage.getItem('paymentMethod') || 'Not specified';
+    document.addEventListener("DOMContentLoaded", function () {
+    let totalItems = localStorage.getItem('itemsCount');
+    if (totalItems) {
+        document.getElementById('totalItems').textContent = totalItems;
+    } else {
+        document.getElementById('totalItems').textContent = "0";
+    }
+});
+    document.getElementById('totalAmount').textContent = localStorage.getItem('totalCost') || 0;
+
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const productImagesContainer = document.getElementById('productImages');
+    cart.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.name;
+        productImagesContainer.appendChild(img);
+    });
+</script>
+</body>
+</html>

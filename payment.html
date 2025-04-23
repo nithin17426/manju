@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Methods</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .payment-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 320px;
+    }
+
+    .payment-container h1 {
+      font-size: 1.5rem;
+      margin: 0 0 20px;
+      text-align: center;
+    }
+
+    .price {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .price span {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 7px;
+    }
+
+    input, select, button {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .payment-methods div {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .payment-methods div.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    button {
+      background-color: #000;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    .secure-notice {
+      font-size: 0.8rem;
+      text-align: center;
+      color: #888;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <h1>Payment methods</h1>
+    <div class="price">
+      <span>₹0</span>
+    </div>
+    <label for="name">Name On The Card</label>
+    <input type="text" id="name" placeholder="Name" required>
+    <div class="payment-methods">
+      <div>Tata Pay</div>
+      <div>Apple Pay</div>
+      <div>Google Pay</div>
+      <div>Phone Pay</div>
+    </div>
+    <label for="card-number">Card number</label>
+    <input type="text" id="card-number" placeholder="1234 1234 1234 1234" maxlength="19" required>
+    <div style="display: flex; gap: 10px;">
+      <div style="flex: 1;">
+        <label for="expiration">Expiration</label>
+        <input type="text" id="expiration" placeholder="MM / YY" required>
+      </div>
+      <div style="flex: 1;">
+        <label for="cvc">CVC</label>
+        <input type="text" id="cvc" placeholder="CVC" maxlength="4" required>
+      </div>
+    </div>
+    <label for="country">Country</label>
+    <select id="country" required>
+      <option value="">Select Country</option>
+      <option value="India">India</option>
+      <option value="United States">United States</option>
+      <option value="Japan">Japan</option>
+      <option value="China">China</option>
+    </select>
+    <button id="pay-button" type="button">Pay ₹0</button>
+    <p class="secure-notice">🔒 Payments are secure & encrypted</p>
+  </div>
+
+  <script>
+    // Highlight the selected payment method
+    const paymentMethods = document.querySelectorAll('.payment-methods div');
+    let selectedPaymentMethod = null;
+
+    paymentMethods.forEach(method => {
+      method.addEventListener('click', () => {
+        paymentMethods.forEach(item => item.classList.remove('active'));
+        method.classList.add('active');
+        selectedPaymentMethod = method.textContent.trim();
+      });
+    });
+
+    // Fetch and display the total price from localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+    const totalCost = localStorage.getItem('totalCost') || '0';
+    const priceElement = document.querySelector('.price span');
+    priceElement.textContent = `₹${totalCost}`;
+    document.getElementById('pay-button').textContent = `Pay ₹${totalCost}`;
+});
+      
+    // Validate form fields and save payment method
+    const payButton = document.getElementById('pay-button');
+    payButton.addEventListener('click', () => {
+      const name = document.getElementById('name').value.trim();
+      const cardNumber = document.getElementById('card-number').value.trim();
+      const expiration = document.getElementById('expiration').value.trim();
+      const cvc = document.getElementById('cvc').value.trim();
+      const country = document.getElementById('country').value.trim();
+
+      if (!name || !cardNumber || !expiration || !cvc || !country || !selectedPaymentMethod) {
+        alert('Please fill out all fields and select a payment method.');
+        return;
+      }
+
+      // Save payment method in localStorage
+      localStorage.setItem('paymentMethod', selectedPaymentMethod);
+
+      // Redirect to ps.html
+      window.location.href = 'ps.html';
+    });
+  </script>
+</body>
+</html>

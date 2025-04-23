@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baymax Clothing Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .gallery-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .image-thumbnails {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .image-thumbnails img {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .image-thumbnails img:hover {
+            transform: scale(1.1);
+        }
+
+        .main-image img {
+            display: block;
+            margin: 0 auto;
+            max-width: 400px;
+            max-height: 400px;
+            width: auto;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .price {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .product-description {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .sizes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .size-button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .size-button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .size-button.selected {
+            background-color: #007bff;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .links {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .add-to-cart {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">Baymax Clothing Store</div>
+        <div class="content">
+            <div class="gallery-container">
+                <div class="title">Product Image Gallery</div>
+                <div class="image-thumbnails">
+                    <img src="t.avif" alt="Thumbnail 1" onclick="changeMainImage(this)">
+                    <img src="tt.avif" alt="Thumbnail 2" onclick="changeMainImage(this)">
+                    <img src="ttt.avif" alt="Thumbnail 3" onclick="changeMainImage(this)">
+                    <img src="tttt.avif" alt="Thumbnail 4" onclick="changeMainImage(this)">
+                </div>
+                <div class="main-image">
+                    <img id="main-image" src="t.avif" alt="Dress Image">
+                </div>
+            </div>
+
+            <div class="product-details-container">
+                <div class="product-title">Linen shirt</div>
+                <div class="price">MRP inclusive of all taxes</div>
+                <div class="product-title">Rs.1900</div>
+
+                <div class="product-description">
+                    Shirt in airy linen with a collar, buttons down the front and a double-layered yoke at the back. Gently dropped shoulders, long sleeves with buttoned cuffs, a patch chest pocket and a gently rounded hem.
+                </div>
+
+                <div class="product-title">Sizes</div>
+
+                <div class="sizes">
+                    <div class="size-button" onclick="selectSize(this)">XS</div>
+                    <div class="size-button" onclick="selectSize(this)">S</div>
+                    <div class="size-button" onclick="selectSize(this)">M</div>
+                    <div class="size-button" onclick="selectSize(this)">L</div>
+                    <div class="size-button" onclick="selectSize(this)">XL</div>
+                    <div class="size-button" onclick="selectSize(this)">XXL</div>
+                    <div class="size-button" onclick="selectSize(this)">3XL</div>
+                    <div class="size-button" onclick="selectSize(this)">4XL</div>
+                </div>
+
+                <div class="links">
+                    <a href="sorry.html">Size out of stock?</a>
+                </div>
+
+                <button class="add-to-cart" onclick="purchaseNow()">Purchase Now</button><br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    let discountData = JSON.parse(localStorage.getItem("discountedProduct"));
+
+    if (discountData && discountData.name === "Linen shirt") { 
+        let priceElement = document.querySelector(".price");
+        let originalPrice = parseFloat(priceElement.nextElementSibling.textContent.replace("Rs.", ""));
+        let discountPrice = originalPrice - (originalPrice * discountData.discount / 100);
+        
+        let discountLabel = document.createElement("div");
+        discountLabel.innerHTML = `<p style="color: red; font-weight: bold;">${discountData.discount}% OFF! Now ₹${discountPrice}</p>`;
+        priceElement.parentNode.insertBefore(discountLabel, priceElement.nextSibling);
+    }
+});
+    
+        function changeMainImage(thumbnail) {
+            const mainImage = document.getElementById('main-image');
+            mainImage.src = thumbnail.src; // Replace the main image's source with the clicked thumbnail's source
+        }
+    
+        function selectSize(button) {
+            const sizeButtons = document.querySelectorAll('.size-button');
+            sizeButtons.forEach(btn => btn.classList.remove('selected')); // Remove 'selected' class from all buttons
+            button.classList.add('selected'); // Add 'selected' class to the clicked button
+        }
+    
+        function purchaseNow() {
+            const selectedSize = document.querySelector('.size-button.selected');
+            if (!selectedSize) {
+                alert('Please select a size before purchasing.');
+                return;
+            }
+    
+            const product = {
+                name: "Linen shirt",
+                price: "₹1900",
+                image: document.getElementById('main-image').src,
+                quantity: 1,
+                size: selectedSize.innerText
+            };
+    
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+    
+            alert(`Added to cart: ${product.name} (Size: ${product.size})`);
+            window.location.href = 'cart.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Baymax Clothing Store</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('c:/Users/nallu/OneDrive/Music/hh.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            background: #ffffff; /* Changed from gradient to solid white */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .login-form h2 {
+            margin: 0 0 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .login-form button:hover {
+            background-color: #333;
+        }
+    </style>
+    <script>
+        function redirectToMainPage(event) {
+            event.preventDefault();
+            window.location.href = "mainpage.html";
+        }
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Login</h2>
+            <form onsubmit="redirectToMainPage(event)">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

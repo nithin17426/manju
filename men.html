@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+            position: relative;
+        }
+        .search-bar {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .search-bar input {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .product-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px;
+        }
+        .product-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .product-card img:hover {
+            transform: scale(1.1);
+        }
+        .product-info h3 {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .product-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .product-info .price {
+            font-size: 18px;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .discount-label {
+    color: rgb(255, 0, 0) !important; /* Force red color */
+    font-weight: bold;
+    font-size: 16px;
+}
+    </style>
+</head>
+<body>
+
+<div class="header">
+    Shopping Center
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search products...🔎">
+    </div>
+</div>
+
+<div class="product-container" id="productContainer">
+    <div class="product-card" data-name="Men's Casual Slim Fit Suit Set">
+        <a href="p4.html">
+            <img src="g.jpeg" alt="Men's Casual Slim Fit Suit Set">
+        </a>
+        <div class="product-info">
+            <h3>Men's Casual Slim Fit Suit Set</h3>
+            <p>Category: Suits</p>
+            <p>Seller: Luxury Threads Co.</p>
+            <p class="price">₹5000</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Men's Formal Shirt">
+        <a href="p5.html">
+            <img src="h.jpg" alt="Men's Formal Shirt">
+        </a>
+        <div class="product-info">
+            <h3>Men's Formal Shirt</h3>
+            <p>Category: Shirts</p>
+            <p>Seller: The Shirt Company</p>
+            <p class="price">₹1299</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Men's Leather Jacket">
+        <a href="p6.html">
+            <img src="f.jpeg" alt="Men's Leather Jacket">
+        </a>
+        <div class="product-info">
+            <h3>Men's Leather Jacket</h3>
+            <p>Category: Jackets</p>
+            <p>Seller: Urban Styles</p>
+            <p class="price">₹4000</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Wool coat">
+        <a href="p7.html">
+            <img src="i.avif" alt="Wool coat">
+        </a>
+        <div class="product-info">
+            <h3>Wool coat</h3>
+            <p>Category: Coat</p>
+            <p>Seller: ActiveWear Pro</p>
+            <p class="price">₹13500</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Regular Fit Linen-blend resort shirt">
+        <a href="p8.html">
+            <img src="j.avif" alt="Regular Fit Linen-blend resort shirt">
+        </a>
+        <div class="product-info">
+            <h3>Regular Fit Linen-blend resort shirt</h3>
+            <p>Category: Shirt</p>
+            <p>Seller: Denim Hub</p>
+            <p class="price">₹2300</p>
+        </div>
+    </div>
+    <div class="product-card" data-name="Loose Fit Sweatshirt">
+        <a href="p9.html">
+            <img src="k.avif" alt="Loose Fit Sweatshirt">
+        </a>
+        <div class="product-info">
+            <h3>Loose Fit Sweatshirt</h3>
+            <p>Category: Sweatshirt</p>
+            <p>Seller: ColdShield Apparel</p>
+            <p class="price">₹800</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let products = document.querySelectorAll('.product-card');
+        
+        products.forEach(product => {
+            let name = product.getAttribute('data-name').toLowerCase();
+            if (name.includes(filter)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let products = document.querySelectorAll(".product-card");
+        let storedDiscount = JSON.parse(localStorage.getItem("discountedProduct")) || null;
+        let newDiscountProduct = null;
+
+        if (!storedDiscount || new Date().getTime() > storedDiscount.expiry) {
+            let randomIndex = Math.floor(Math.random() * products.length);
+            let selectedProduct = products[randomIndex];
+            let discountPercentage = Math.floor(Math.random() * 21) + 10;
+
+            newDiscountProduct = {
+                name: selectedProduct.getAttribute("data-name"),
+                price: parseFloat(selectedProduct.querySelector(".price").textContent.replace("₹", "")),
+                discount: discountPercentage,
+                expiry: new Date().getTime() + 60000
+            };
+
+            localStorage.setItem("discountedProduct", JSON.stringify(newDiscountProduct));
+        }
+
+        let discountData = newDiscountProduct || storedDiscount;
+        if (discountData) {
+            products.forEach(product => {
+                if (product.getAttribute("data-name") === discountData.name) {
+                    let priceElement = product.querySelector(".price");
+                    let discountPrice = discountData.price - (discountData.price * discountData.discount / 100);
+                    let discountLabel = document.createElement("p");
+                    discountLabel.classList.add("discount-label");
+                    discountLabel.innerHTML = `${discountData.discount}% OFF! Now ₹${discountPrice}`;
+                    priceElement.parentNode.insertBefore(discountLabel, priceElement.nextSibling);
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
